@@ -9,6 +9,8 @@ import javax.swing.*;
  */
 public class MainWindow {
     private JPanel Main;
+    private JButton symulujButton;
+    private JPanel canvas;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("MainWindow");
@@ -16,5 +18,10 @@ public class MainWindow {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+        canvas = new CarSpriteCanvas();
     }
 }
