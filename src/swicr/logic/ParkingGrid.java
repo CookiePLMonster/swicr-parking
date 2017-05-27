@@ -24,7 +24,7 @@ public class ParkingGrid {
 
     public boolean addCar(Car car) {
         int i;
-        for ( i=0; i<=GRID_HEIGHT; i+=2) {
+        for ( i=0; i<GRID_HEIGHT; i+=2) {
             int j;
             for ( j=0; j<GRID_WIDTH;j++) {
                 if (parkingSpaces[j][i] == null) {
@@ -34,7 +34,7 @@ public class ParkingGrid {
             }
         }
 
-        for ( i=1; i<=GRID_HEIGHT; i+=2) {
+        for ( i=1; i<GRID_HEIGHT; i+=2) {
             int j;
             for ( j=0; j<GRID_WIDTH;j++) {
                 if (parkingSpaces[j][i] == null) {
