@@ -22,7 +22,7 @@ public class MainWindow {
 
     public MainWindow() {
         symulujButton.addActionListener(e -> {
-            if ( grid.addCar( new Car("X" + carNum++) ) ) {
+            if ( grid.addCar( new Car("c" + carNum++) ) ) {
                 canvas.repaint();
             }
         });

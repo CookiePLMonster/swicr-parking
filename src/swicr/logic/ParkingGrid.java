@@ -39,6 +39,9 @@ public class ParkingGrid {
                 if ( space != null ) {
                     g.setColor(Color.BLUE);
                     g.fillOval(marginX + x, marginY + y, circleSize, circleSize);
+
+                    g.setColor(Color.WHITE);
+                    g.drawString( space.getName(), marginX + x + (circleSize/2), marginY + y + (circleSize/2) );
                 }
 
                 // Empty space

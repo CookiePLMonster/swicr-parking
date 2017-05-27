@@ -16,4 +16,8 @@ public class Car {
     public void tick() {
 
     }
+
+    public String getName() {
+        return name;
+    }
 }
