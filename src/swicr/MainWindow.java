@@ -1,5 +1,9 @@
 package swicr;
 
+import swicr.logic.Car;
+import swicr.logic.ParkingGrid;
+import swicr.view.CarSpriteCanvas;
+
 import javax.swing.*;
 
 /**
@@ -12,6 +16,18 @@ public class MainWindow {
     private JButton symulujButton;
     private JPanel canvas;
 
+    private ParkingGrid grid;
+
+    private int carNum = 0;
+
+    public MainWindow() {
+        symulujButton.addActionListener(e -> {
+            if ( grid.addCar( new Car("X" + carNum++) ) ) {
+                canvas.repaint();
+            }
+        });
+    }
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("MainWindow");
         frame.setContentPane(new MainWindow().Main);
@@ -22,6 +38,8 @@ public class MainWindow {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        canvas = new CarSpriteCanvas();
+        grid = new ParkingGrid();
+
+        canvas = new CarSpriteCanvas(grid);
     }
 }
