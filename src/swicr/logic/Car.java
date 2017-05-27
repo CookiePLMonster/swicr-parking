@@ -6,15 +6,20 @@ package swicr.logic;
  * @author Adrian Zdanowicz
  */
 public class Car {
-
+    private int id;
     private String name;
 
-    public Car(String name) {
-        this.name = name;
+    public Car(int id) {
+        this.id = id;
+        this.name = Integer.toString(id);
     }
 
     public void tick() {
 
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

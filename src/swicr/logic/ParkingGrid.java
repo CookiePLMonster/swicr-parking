@@ -12,6 +12,13 @@ public class ParkingGrid {
 
     private static final int GRID_HEIGHT = 10;
 
+    public enum MoveDirection {
+        MOVE_UP,
+        MOVE_DOWN,
+        MOVE_LEFT,
+        MOVE_RIGHT
+    }
+
     private Car[][] parkingSpaces = new Car[GRID_HEIGHT+1][GRID_WIDTH];
 
     public static int getGridWidth() {
@@ -46,6 +53,15 @@ public class ParkingGrid {
         return false;
     }
 
+    public boolean retrieveCarById( int carID ) {
+
+        return false;
+    }
+
+    public void moveCar(int fromX, int fromY, MoveDirection direction) {
+
+    }
+
     public void paint(Graphics g, int marginX, int marginY, int circleSize) {
         int y = 0;
         int posY = 0;
@@ -75,5 +91,22 @@ public class ParkingGrid {
             y++;
             posY += (circleSize * 3) / 2;
         }
+    }
+
+
+    private Coords findCarCoordsById( int carID ) {
+        int y = 0;
+        for ( Car[] row : parkingSpaces ) {
+            int x = 0;
+            for ( Car space : row ) {
+                if ( space != null && space.getId() == carID ) {
+                    return new Coords(x, y);
+                }
+
+                x++;
+            }
+            y++;
+        }
+        return null;
     }
 }
