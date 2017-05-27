@@ -54,6 +54,7 @@ public class ParkingGrid {
     }
 
     public boolean retrieveCarById( int carID ) {
+        Coords carCoords = findCarCoordsById( carID );
 
         return false;
     }

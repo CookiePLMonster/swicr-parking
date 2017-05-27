@@ -5,6 +5,8 @@ import swicr.logic.ParkingGrid;
 import swicr.view.CarSpriteCanvas;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created on 2017-05-26.
@@ -15,6 +17,8 @@ public class MainWindow {
     private JPanel Main;
     private JButton symulujButton;
     private JPanel canvas;
+    private JTextField requestedCar;
+    private JButton retrieve;
 
     private ParkingGrid grid;
 
@@ -25,6 +29,14 @@ public class MainWindow {
             if ( grid.addCar( new Car(carNum++) ) ) {
                 canvas.repaint();
             }
+        });
+        retrieve.addActionListener(e -> {
+            try {
+                int carID = Integer.parseUnsignedInt(requestedCar.getText());
+                if ( grid.retrieveCarById(carID) ) {
+                    canvas.repaint();
+                }
+            } catch ( NumberFormatException ex ) { };
         });
     }
 
