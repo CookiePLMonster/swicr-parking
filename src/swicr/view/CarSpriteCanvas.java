@@ -11,11 +11,13 @@ import java.awt.*;
  * @author Adrian Zdanowicz
  */
 public class CarSpriteCanvas extends JPanel {
-    private final int CIRCLE_SIZE = 50;
+    private final int CIRCLE_SIZE = 25;
     private ParkingGrid grid;
 
     public CarSpriteCanvas(ParkingGrid grid) {
         this.grid = grid;
+
+        setMinimumSize(new Dimension(ParkingGrid.getGridWidth() * (CIRCLE_SIZE*3)/2, (ParkingGrid.getGridHeight() + 1) * (CIRCLE_SIZE*3)/2));
     }
 
     @Override
