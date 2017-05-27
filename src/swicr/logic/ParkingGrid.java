@@ -23,20 +23,25 @@ public class ParkingGrid {
     }
 
     public boolean addCar(Car car) {
-        // AZ: Tutaj logika dodawania samochodow i ustawiania ich w odpowiedni sposob!
-        int i = 0;
-        for ( Car[] row : parkingSpaces ) {
-            if ( i == GRID_HEIGHT ) return false; // Nie pozwol dodac pojazdu do najnizszego rzedu
-
-            int j = 0;
-            for (Car space : row) {
-                if (space == null) {
-                    parkingSpaces[i][j] = car;
+        int i;
+        for ( i=0; i<=GRID_HEIGHT; i+=2) {
+            int j;
+            for ( j=0; j<GRID_WIDTH;j++) {
+                if (parkingSpaces[j][i] == null) {
+                    parkingSpaces[j][i] = car;
                     return true;
                 }
-                j++;
             }
-            i++;
+        }
+
+        for ( i=1; i<=GRID_HEIGHT; i+=2) {
+            int j;
+            for ( j=0; j<GRID_WIDTH;j++) {
+                if (parkingSpaces[j][i] == null) {
+                    parkingSpaces[j][i] = car;
+                    return true;
+                }
+            }
         }
         return false;
     }
