@@ -8,15 +8,26 @@ import java.awt.*;
  * @author Adrian Zdanowicz
  */
 public class ParkingGrid {
-    private static final int GRID_WIDTH = 5;
-    private static final int GRID_HEIGHT = 5;
+    private static final int GRID_WIDTH = 10;
 
-    private Car[][] parkingSpaces = new Car[GRID_HEIGHT][GRID_WIDTH];
+    private static final int GRID_HEIGHT = 10;
+
+    private Car[][] parkingSpaces = new Car[GRID_HEIGHT+1][GRID_WIDTH];
+
+    public static int getGridWidth() {
+        return GRID_WIDTH;
+    }
+
+    public static int getGridHeight() {
+        return GRID_HEIGHT;
+    }
 
     public boolean addCar(Car car) {
         // AZ: Tutaj logika dodawania samochodow i ustawiania ich w odpowiedni sposob!
         int i = 0;
         for ( Car[] row : parkingSpaces ) {
+            if ( i == GRID_HEIGHT ) return false; // Nie pozwol dodac pojazdu do najnizszego rzedu
+
             int j = 0;
             for (Car space : row) {
                 if (space == null) {
@@ -31,26 +42,33 @@ public class ParkingGrid {
     }
 
     public void paint(Graphics g, int marginX, int marginY, int circleSize) {
-
         int y = 0;
+        int posY = 0;
         for ( Car[] row : parkingSpaces ) {
             int x = 0;
+            int posX = 0;
             for ( Car space : row ) {
-                if ( space != null ) {
-                    g.setColor(Color.BLUE);
-                    g.fillOval(marginX + x, marginY + y, circleSize, circleSize);
+                if ( y != GRID_HEIGHT || x == GRID_WIDTH-1 ) {
 
-                    g.setColor(Color.WHITE);
-                    g.drawString( space.getName(), marginX + x + (circleSize/2), marginY + y + (circleSize/2) );
+                    if (space != null) {
+                        g.setColor(Color.BLUE);
+                        g.fillOval(marginX + posX, marginY + posY, circleSize, circleSize);
+
+                        g.setColor(Color.WHITE);
+                        g.drawString(space.getName(), marginX + posX + (circleSize / 2), marginY + posY + (circleSize / 2));
+                    }
+
+                    // Empty space
+                    g.setColor(Color.BLACK);
+                    g.drawOval(marginX + posX, marginY + posY, circleSize, circleSize);
+
                 }
 
-                // Empty space
-                g.setColor(Color.BLACK);
-                g.drawOval(marginX + x, marginY + y,circleSize, circleSize);
-
-                x += 75;
+                x++;
+                posX += (circleSize * 3) / 2;
             }
-            y += 75;
+            y++;
+            posY += (circleSize * 3) / 2;
         }
     }
 }
