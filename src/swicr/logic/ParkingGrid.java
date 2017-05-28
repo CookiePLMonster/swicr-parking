@@ -60,28 +60,32 @@ public class ParkingGrid {
 
     private void moveCar(int fromX, int fromY, MoveDirection direction) {
         if( parkingSpaces [fromX][fromY] != null){
-            switch (direction){
+            switch (direction) {
                 case MOVE_DOWN:
-                    if(parkingSpaces [fromX+1][fromY] == null){
-                        parkingSpaces [fromX+1][fromY] = parkingSpaces[fromX][fromY];
-                        parkingSpaces[fromX][fromY] = null;
+                    if (parkingSpaces[fromX + 1][fromY] == null) {
+                        if(fromX==getGridWidth()-1 && fromY==getGridHeight()-1){
+                            parkingSpaces[fromX][fromY] = null;
+                        } else {
+                            parkingSpaces[fromX + 1][fromY] = parkingSpaces[fromX][fromY];
+                            parkingSpaces[fromX][fromY] = null;
+                        }
                         break;
                     }
                 case MOVE_UP:
-                    if(parkingSpaces [fromX-1][fromY] == null){
-                        parkingSpaces [fromX-1][fromY] = parkingSpaces[fromX][fromY];
+                    if (parkingSpaces[fromX - 1][fromY] == null) {
+                        parkingSpaces[fromX - 1][fromY] = parkingSpaces[fromX][fromY];
                         parkingSpaces[fromX][fromY] = null;
                         break;
                     }
                 case MOVE_LEFT:
-                    if(parkingSpaces [fromX][fromY-1] == null){
-                        parkingSpaces [fromX][fromY-1] = parkingSpaces[fromX][fromY];
+                    if (parkingSpaces[fromX][fromY - 1] == null) {
+                        parkingSpaces[fromX][fromY - 1] = parkingSpaces[fromX][fromY];
                         parkingSpaces[fromX][fromY] = null;
                         break;
                     }
                 case MOVE_RIGHT:
-                    if(parkingSpaces [fromX][fromY+1] == null){
-                        parkingSpaces [fromX][fromY+1] = parkingSpaces[fromX][fromY];
+                    if (parkingSpaces[fromX][fromY + 1] == null) {
+                        parkingSpaces[fromX][fromY + 1] = parkingSpaces[fromX][fromY];
                         parkingSpaces[fromX][fromY] = null;
                         break;
                     }
