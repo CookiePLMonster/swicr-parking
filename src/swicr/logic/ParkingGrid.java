@@ -24,7 +24,7 @@ public class ParkingGrid implements Runnable {
         while ( true ) {
             Integer currentFindWay = findWayJobs.peek();
             if (currentFindWay != null) {
-                if (findWayJob(currentFindWay) == true)
+                if (findWayJob(currentFindWay))
                     findWayJobs.remove();
             }
 
@@ -80,32 +80,28 @@ public class ParkingGrid implements Runnable {
 
     private void moveCar(int fromX, int fromY, MoveDirection direction) {
         if( parkingSpaces [fromX][fromY] != null){
-            switch (direction) {
+            switch (direction){
                 case MOVE_DOWN:
-                    if (parkingSpaces[fromX + 1][fromY] == null) {
-                        if(fromX==getGridWidth()-1 && fromY==getGridHeight()-1){
-                            parkingSpaces[fromX][fromY] = null;
-                        } else {
-                            parkingSpaces[fromX + 1][fromY] = parkingSpaces[fromX][fromY];
-                            parkingSpaces[fromX][fromY] = null;
-                        }
+                    if(parkingSpaces [fromX+1][fromY] == null){
+                        parkingSpaces [fromX+1][fromY] = parkingSpaces[fromX][fromY];
+                        parkingSpaces[fromX][fromY] = null;
                         break;
                     }
                 case MOVE_UP:
-                    if (parkingSpaces[fromX - 1][fromY] == null) {
-                        parkingSpaces[fromX - 1][fromY] = parkingSpaces[fromX][fromY];
+                    if(parkingSpaces [fromX-1][fromY] == null){
+                        parkingSpaces [fromX-1][fromY] = parkingSpaces[fromX][fromY];
                         parkingSpaces[fromX][fromY] = null;
                         break;
                     }
                 case MOVE_LEFT:
-                    if (parkingSpaces[fromX][fromY - 1] == null) {
-                        parkingSpaces[fromX][fromY - 1] = parkingSpaces[fromX][fromY];
+                    if(parkingSpaces [fromX][fromY-1] == null){
+                        parkingSpaces [fromX][fromY-1] = parkingSpaces[fromX][fromY];
                         parkingSpaces[fromX][fromY] = null;
                         break;
                     }
                 case MOVE_RIGHT:
-                    if (parkingSpaces[fromX][fromY + 1] == null) {
-                        parkingSpaces[fromX][fromY + 1] = parkingSpaces[fromX][fromY];
+                    if(parkingSpaces [fromX][fromY+1] == null){
+                        parkingSpaces [fromX][fromY+1] = parkingSpaces[fromX][fromY];
                         parkingSpaces[fromX][fromY] = null;
                         break;
                     }
@@ -167,6 +163,11 @@ public class ParkingGrid implements Runnable {
 
     private boolean findWayJob(int carID){
         Coords currentPosition = findCarCoordsById(carID);
+        if ( currentPosition.y == GRID_HEIGHT-1 && currentPosition.x == GRID_WIDTH) {
+            parkingSpaces[currentPosition.x][currentPosition.y] = null;
+            return true;
+        }
+
         if (currentPosition.y == getGridWidth() - 1) {  // jeśli w ostatniej kolumnie
             moveCar(currentPosition.x, currentPosition.y, MoveDirection.MOVE_DOWN);
         } else if (parkingSpaces[currentPosition.x][currentPosition.y + 1] == null ) {   // jeśli prosta droga do ostatniej kolumny
