@@ -156,6 +156,15 @@ public class ParkingGrid {
                     moveCar(currentPosition.x+1,i,MoveDirection.MOVE_LEFT);
                 } moveCar(currentPosition.x,getGridWidth()-1,MoveDirection.MOVE_DOWN);
                 moveCar(currentPosition.x+1,getGridWidth()-1,MoveDirection.MOVE_LEFT);
+            } else {
+                int i;
+                for (i = 0; i<getGridWidth();i++){
+                    moveCar(currentPosition.x, 9-i,MoveDirection.MOVE_RIGHT);
+                } moveCar(currentPosition.x,getGridWidth()-1,MoveDirection.MOVE_UP);
+                moveCar(currentPosition.x-1,0,MoveDirection.MOVE_DOWN);
+                for(i = 0; i<getGridWidth();i++) {
+                    moveCar(currentPosition.x - 1, i, MoveDirection.MOVE_LEFT);
+                }
             }
 
     }
