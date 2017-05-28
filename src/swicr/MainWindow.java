@@ -20,6 +20,7 @@ public class MainWindow {
     private Fifo tasks;
 
     private ParkingGrid grid;
+    private Thread logicThread;
     private int carNum = 0;
 
     public MainWindow() {
@@ -35,12 +36,8 @@ public class MainWindow {
             int carID;
             try {
                 carID = Integer.parseUnsignedInt(requestedCar.getText());
-                if ( grid.retrieveCarById(carID) ) {
-                    canvas.repaint();
-                }
             } catch ( NumberFormatException ex ) { carID = 0; };
             grid.findWay(carID);
-            canvas.repaint();
         });
 
         symulujButton.addActionListener(e -> {
@@ -64,5 +61,8 @@ public class MainWindow {
         grid = new ParkingGrid();
 
         canvas = new CarSpriteCanvas(grid);
+        grid.setCanvas(canvas);
+        logicThread = new Thread(grid, "Logic");
+        logicThread.start();
     }
 }

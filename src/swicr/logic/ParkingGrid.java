@@ -1,16 +1,42 @@
 package swicr.logic;
 
+import javax.swing.*;
 import java.awt.*;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created on 2017-05-27.
  *
  * @author Adrian Zdanowicz
  */
-public class ParkingGrid {
+public class ParkingGrid implements Runnable {
     private static final int GRID_WIDTH = 10;
 
     private static final int GRID_HEIGHT = 10;
+
+    private Queue<Integer> findWayJobs = new ConcurrentLinkedQueue<Integer>();
+
+    private JPanel canvasForPaint;
+
+    @Override
+    public void run() {
+        while ( true ) {
+            Integer currentFindWay = findWayJobs.peek();
+            if (currentFindWay != null) {
+                if (findWayJob(currentFindWay) == true)
+                    findWayJobs.remove();
+            }
+
+
+            canvasForPaint.repaint();
+            try {
+                Thread.sleep(250);                 //1000 milliseconds is one second.
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
 
     public enum MoveDirection {
         MOVE_UP,
@@ -49,12 +75,6 @@ public class ParkingGrid {
                 }
             }
         }
-        return false;
-    }
-
-    public boolean retrieveCarById( int carID ) {
-        Coords carCoords = findCarCoordsById( carID );
-
         return false;
     }
 
@@ -141,35 +161,43 @@ public class ParkingGrid {
         return null;
     }
 
-    public void findWay(int carID){
-        Coords currentPosition = findCarCoordsById(carID);
-            if (currentPosition.y == getGridWidth() - 1) {  // jeśli w ostatniej kolumnie
-                moveCar(currentPosition.x, currentPosition.y, MoveDirection.MOVE_DOWN);
-            } else if (parkingSpaces[currentPosition.x][currentPosition.y + 1] == null ) {   // jeśli prosta droga do ostatniej kolumny
-                moveCar(currentPosition.x, currentPosition.y, MoveDirection.MOVE_RIGHT);
-            } else if ( currentPosition.x != getGridHeight()-1 && parkingSpaces[currentPosition.x+1][currentPosition.y] == null ) { //jeśli pod spodem miejsce wolne
-                moveCar(currentPosition.x,currentPosition.y,MoveDirection.MOVE_DOWN);
-            } else if ( currentPosition.x != 0 && parkingSpaces[currentPosition.x-1][currentPosition.y] == null) {  //jeśli nad samochodem jest miejsce wolne
-                moveCar(currentPosition.x,currentPosition.y,MoveDirection.MOVE_UP);
-            } else if (currentPosition.x != getGridHeight()-1){
-                int i;
-                for (i = 0; i<getGridWidth();i++){
-                    moveCar(currentPosition.x, 9-i,MoveDirection.MOVE_RIGHT);
-                } moveCar(currentPosition.x+1,0,MoveDirection.MOVE_UP);
-                for(i = 0; i<getGridWidth();i++){
-                    moveCar(currentPosition.x+1,i,MoveDirection.MOVE_LEFT);
-                } moveCar(currentPosition.x,getGridWidth()-1,MoveDirection.MOVE_DOWN);
-                moveCar(currentPosition.x+1,getGridWidth()-1,MoveDirection.MOVE_LEFT);
-            } else {
-                int i;
-                for (i = 0; i<getGridWidth();i++){
-                    moveCar(currentPosition.x, 9-i,MoveDirection.MOVE_RIGHT);
-                } moveCar(currentPosition.x,getGridWidth()-1,MoveDirection.MOVE_UP);
-                moveCar(currentPosition.x-1,0,MoveDirection.MOVE_DOWN);
-                for(i = 0; i<getGridWidth();i++) {
-                    moveCar(currentPosition.x - 1, i, MoveDirection.MOVE_LEFT);
-                }
-            }
+    public void findWay(int carID) {
+        findWayJobs.add(carID);
+    }
 
+    private boolean findWayJob(int carID){
+        Coords currentPosition = findCarCoordsById(carID);
+        if (currentPosition.y == getGridWidth() - 1) {  // jeśli w ostatniej kolumnie
+            moveCar(currentPosition.x, currentPosition.y, MoveDirection.MOVE_DOWN);
+        } else if (parkingSpaces[currentPosition.x][currentPosition.y + 1] == null ) {   // jeśli prosta droga do ostatniej kolumny
+            moveCar(currentPosition.x, currentPosition.y, MoveDirection.MOVE_RIGHT);
+        } else if ( currentPosition.x != getGridHeight()-1 && parkingSpaces[currentPosition.x+1][currentPosition.y] == null ) { //jeśli pod spodem miejsce wolne
+            moveCar(currentPosition.x,currentPosition.y,MoveDirection.MOVE_DOWN);
+        } else if ( currentPosition.x != 0 && parkingSpaces[currentPosition.x-1][currentPosition.y] == null) {  //jeśli nad samochodem jest miejsce wolne
+            moveCar(currentPosition.x,currentPosition.y,MoveDirection.MOVE_UP);
+        } else if (currentPosition.x != getGridHeight()-1){
+            int i;
+            for (i = 0; i<getGridWidth();i++){
+                moveCar(currentPosition.x, 9-i,MoveDirection.MOVE_RIGHT);
+            } moveCar(currentPosition.x+1,0,MoveDirection.MOVE_UP);
+            for(i = 0; i<getGridWidth();i++){
+                moveCar(currentPosition.x+1,i,MoveDirection.MOVE_LEFT);
+            } moveCar(currentPosition.x,getGridWidth()-1,MoveDirection.MOVE_DOWN);
+            moveCar(currentPosition.x+1,getGridWidth()-1,MoveDirection.MOVE_LEFT);
+        } else {
+            int i;
+            for (i = 0; i<getGridWidth();i++){
+                moveCar(currentPosition.x, 9-i,MoveDirection.MOVE_RIGHT);
+            } moveCar(currentPosition.x,getGridWidth()-1,MoveDirection.MOVE_UP);
+            moveCar(currentPosition.x-1,0,MoveDirection.MOVE_DOWN);
+            for(i = 0; i<getGridWidth();i++) {
+                moveCar(currentPosition.x - 1, i, MoveDirection.MOVE_LEFT);
+            }
+        }
+        return false;
+    }
+
+    public void setCanvas(JPanel canvasForPaint) {
+        this.canvasForPaint = canvasForPaint;
     }
 }
