@@ -1,12 +1,9 @@
 package swicr;
 
-import swicr.logic.Car;
-import swicr.logic.ParkingGrid;
+import swicr.logic.*;
 import swicr.view.CarSpriteCanvas;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created on 2017-05-26.
@@ -15,30 +12,44 @@ import java.awt.event.ActionListener;
  */
 public class MainWindow {
     private JPanel Main;
-    private JButton symulujButton;
+    private JButton addButton;
     private JPanel canvas;
     private JTextField requestedCar;
     private JButton retrieve;
+    private JButton symulujButton;
+    private Fifo tasks;
 
     private ParkingGrid grid;
-
     private int carNum = 0;
 
     public MainWindow() {
-        symulujButton.addActionListener(e -> {
+        tasks = new Fifo();
+
+
+        addButton.addActionListener(e -> {
             if ( grid.addCar( new Car(carNum++) ) ) {
                 canvas.repaint();
             }
         });
         retrieve.addActionListener(e -> {
+            int carID;
             try {
-                int carID = Integer.parseUnsignedInt(requestedCar.getText());
+                carID = Integer.parseUnsignedInt(requestedCar.getText());
                 if ( grid.retrieveCarById(carID) ) {
                     canvas.repaint();
                 }
-            } catch ( NumberFormatException ex ) { };
+            } catch ( NumberFormatException ex ) { carID = 0; };
+            grid.findWay(carID);
+            canvas.repaint();
+        });
+
+        symulujButton.addActionListener(e -> {
+            while(tasks.get() != null) {
+                canvas.repaint();
+            }
         });
     }
+
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("MainWindow");
