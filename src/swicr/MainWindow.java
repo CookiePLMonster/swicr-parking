@@ -35,7 +35,7 @@ public class MainWindow {
             try {
                 carID = Integer.parseUnsignedInt(requestedCar.getText());
             } catch ( NumberFormatException ex ) { carID = 0; };
-            simulator.findWay(carID);
+            simulator.callCarOut(carID);
         });
 
         symulujButton.addActionListener(e -> {

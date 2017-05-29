@@ -23,7 +23,11 @@ public class ParkingSimulation implements Runnable {
     private Queue<FindWayJob> insertJobs = new ConcurrentLinkedQueue<FindWayJob>();
 
     private Time time = new Time(6, 0);
-    private TimeSchedule schedule = new TimeSchedule("time.csv");
+    private TimeSchedule schedule;
+
+    public ParkingSimulation() {
+        schedule = new TimeSchedule(this, "time.csv");
+    }
 
     @Override
     public void run() {
@@ -37,9 +41,6 @@ public class ParkingSimulation implements Runnable {
                 if (grid.insertJob(insertWay))
                     insertJobs.remove();
             }
-
-
-
 
             grid.repaintCanvas();
             try {
@@ -62,11 +63,11 @@ public class ParkingSimulation implements Runnable {
         return grid;
     }
 
-    public boolean addCar(Car car) {
-        return grid.addCar(car);
+    public boolean addCar(int carID) {
+        return grid.addCar(new Car(carID));
     }
 
-    public void findWay(int carID) {
+    public void callCarOut(int carID) {
         findWayJobs.add( new FindWayJob(carID) );
     }
 

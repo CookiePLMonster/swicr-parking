@@ -6,5 +6,6 @@ package swicr.logic.time;
  * @author Adrian Zdanowicz
  */
 public interface TimeTickEvent {
+    void setInitialState(int time);
     void onTimeTick(int time);
 }

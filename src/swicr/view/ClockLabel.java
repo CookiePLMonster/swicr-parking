@@ -11,6 +11,11 @@ import javax.swing.*;
  */
 public class ClockLabel extends JLabel implements TimeTickEvent {
     @Override
+    public void setInitialState(int time) {
+        onTimeTick(time);
+    }
+
+    @Override
     public void onTimeTick(int time) {
         SwingUtilities.invokeLater(() -> {
             int hour = time / 60;

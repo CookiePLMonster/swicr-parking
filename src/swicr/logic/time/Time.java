@@ -43,7 +43,9 @@ public class Time implements Runnable {
 
     @Override
     public void run() {
-        dispatchTickEvents(currentTime);
+        for ( TimeTickEvent e : tickEvents ) {
+            e.setInitialState(currentTime);
+        }
 
         while ( true ) {
             try {
@@ -57,5 +59,9 @@ public class Time implements Runnable {
             }
             dispatchTickEvents(currentTime);
         }
+    }
+
+    public static int getResolution() {
+        return TIMESTEP;
     }
 }
