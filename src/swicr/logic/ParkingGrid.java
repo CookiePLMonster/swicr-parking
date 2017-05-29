@@ -1,5 +1,7 @@
 package swicr.logic;
 
+import swicr.view.CarSpriteCanvas;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -10,32 +12,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author Adrian Zdanowicz
  */
-public class ParkingGrid implements Runnable {
+public class ParkingGrid {
     private static final int GRID_WIDTH = 10;
-
     private static final int GRID_HEIGHT = 10;
-
-    private Queue<Integer> findWayJobs = new ConcurrentLinkedQueue<Integer>();
 
     private JPanel canvasForPaint;
 
-    @Override
-    public void run() {
-        while ( true ) {
-            Integer currentFindWay = findWayJobs.peek();
-            if (currentFindWay != null) {
-                if (findWayJob(currentFindWay))
-                    findWayJobs.remove();
-            }
-
-
-            canvasForPaint.repaint();
-            try {
-                Thread.sleep(250);                 //1000 milliseconds is one second.
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-        }
+    public void repaintCanvas() {
+        canvasForPaint.repaint();
     }
 
     public enum MoveDirection {
@@ -157,11 +141,8 @@ public class ParkingGrid implements Runnable {
         return null;
     }
 
-    public void findWay(int carID) {
-        findWayJobs.add(carID);
-    }
-
-    private boolean findWayJob(int carID){
+    // Jobs
+    protected boolean findWayJob(int carID){
         Coords currentPosition = findCarCoordsById(carID);
         if ( currentPosition.y == GRID_HEIGHT-1 && currentPosition.x == GRID_WIDTH) {
             parkingSpaces[currentPosition.x][currentPosition.y] = null;
@@ -198,7 +179,8 @@ public class ParkingGrid implements Runnable {
         return false;
     }
 
-    public void setCanvas(JPanel canvasForPaint) {
-        this.canvasForPaint = canvasForPaint;
+    public void setupCanvas(CarSpriteCanvas canvas) {
+        this.canvasForPaint = canvas;
+        canvas.setGrid(this);
     }
 }

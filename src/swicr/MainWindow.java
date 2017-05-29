@@ -19,16 +19,15 @@ public class MainWindow {
     private JButton symulujButton;
     private Fifo tasks;
 
-    private ParkingGrid grid;
-    private Thread logicThread;
+    private ParkingSimulation simulator;
+
     private int carNum = 0;
 
     public MainWindow() {
-        tasks = new Fifo();
-
+        simulator = new ParkingSimulation();
 
         addButton.addActionListener(e -> {
-            if ( grid.addCar( new Car(carNum++) ) ) {
+            if ( simulator.addCar( new Car(carNum++) ) ) {
                 canvas.repaint();
             }
         });
@@ -37,7 +36,7 @@ public class MainWindow {
             try {
                 carID = Integer.parseUnsignedInt(requestedCar.getText());
             } catch ( NumberFormatException ex ) { carID = 0; };
-            grid.findWay(carID);
+            simulator.findWay(carID);
         });
 
         symulujButton.addActionListener(e -> {
@@ -45,6 +44,9 @@ public class MainWindow {
                 canvas.repaint();
             }
         });
+
+        simulator.getGrid().setupCanvas((CarSpriteCanvas)canvas);
+        simulator.start();
     }
 
 
@@ -53,16 +55,12 @@ public class MainWindow {
         frame.setContentPane(new MainWindow().Main);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+
         frame.setVisible(true);
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        grid = new ParkingGrid();
-
-        canvas = new CarSpriteCanvas(grid);
-        grid.setCanvas(canvas);
-        logicThread = new Thread(grid, "Logic");
-        logicThread.start();
+        canvas = new CarSpriteCanvas();
     }
 }

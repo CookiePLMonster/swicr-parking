@@ -14,9 +14,7 @@ public class CarSpriteCanvas extends JPanel {
     private final int CIRCLE_SIZE = 25;
     private ParkingGrid grid;
 
-    public CarSpriteCanvas(ParkingGrid grid) {
-        this.grid = grid;
-
+    public CarSpriteCanvas() {
         setMinimumSize(new Dimension(ParkingGrid.getGridWidth() * (CIRCLE_SIZE*3)/2, (ParkingGrid.getGridHeight() + 1) * (CIRCLE_SIZE*3)/2));
     }
 
@@ -25,5 +23,9 @@ public class CarSpriteCanvas extends JPanel {
         super.paintComponent(g);
 
         grid.paint(g, 10, 10, CIRCLE_SIZE);
+    }
+
+    public void setGrid(ParkingGrid grid) {
+        this.grid = grid;
     }
 }
