@@ -18,8 +18,6 @@ public class MainWindow {
     private JButton retrieve;
     private JButton symulujButton;
     private JLabel clockField;
-    private Fifo removeTasks;
-    private Fifo insertTasks;
 
     private ParkingSimulation simulator;
 
@@ -29,11 +27,7 @@ public class MainWindow {
         simulator = new ParkingSimulation();
 
         addButton.addActionListener(e -> {
-            Car toInsert = new Car(carNum++);
-            Coords finalPosition = simulator.findNewCarCoords();
-            while(insertTasks.get() != null){
-                canvas.repaint();
-            }
+            simulator.insert(carNum++);
         });
         retrieve.addActionListener(e -> {
             int carID;
@@ -44,9 +38,6 @@ public class MainWindow {
         });
 
         symulujButton.addActionListener(e -> {
-            while(removeTasks.get() != null) {
-                canvas.repaint();
-            }
         });
 
         simulator.getGrid().setupCanvas((CarSpriteCanvas)canvas);
