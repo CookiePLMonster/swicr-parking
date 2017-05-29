@@ -1,6 +1,6 @@
 package swicr;
 
-import swicr.logic.*;
+import swicr.logic.ParkingSimulation;
 import swicr.view.CarSpriteCanvas;
 import swicr.view.ClockLabel;
 

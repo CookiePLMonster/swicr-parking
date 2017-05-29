@@ -5,7 +5,6 @@ import swicr.logic.time.Time;
 import swicr.logic.time.TimeSchedule;
 import swicr.logic.time.TimeTickEvent;
 
-import javax.swing.*;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 

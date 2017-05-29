@@ -5,8 +5,6 @@ import swicr.view.CarSpriteCanvas;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created on 2017-05-27.
