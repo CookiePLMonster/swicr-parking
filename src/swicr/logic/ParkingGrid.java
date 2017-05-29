@@ -142,6 +142,15 @@ public class ParkingGrid {
         return null;
     }
 
+    public void maintenanceJobs(){
+        int i,j;
+        for(i=0; i<getGridHeight();i++){
+            for(j=getGridWidth()-3;j>=0;j--){
+                moveCar(i,j,MoveDirection.MOVE_RIGHT);
+            }
+        }
+    }
+
     protected boolean insertJob(FindWayJob job) {
         if ( findCarCoordsById(job.carID) == null){  // jeśli nie ma takiego samochodu - wprowadź go
             parkingSpaces[getGridHeight()][getGridWidth()-1] = new Car(job.carID);
