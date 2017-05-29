@@ -145,19 +145,23 @@ public class ParkingGrid {
     // Jobs
     protected boolean findWayJob(FindWayJob job){
         Coords currentPosition = findCarCoordsById(job.carID);
+
         if ( currentPosition.y == GRID_HEIGHT-1 && currentPosition.x == GRID_WIDTH) {
             parkingSpaces[currentPosition.x][currentPosition.y] = null;
             return true;
         }
 
-        if (currentPosition.y == getGridWidth() - 1) {  // jeśli w ostatniej kolumnie
+        if (currentPosition.y == getGridWidth() - 1 ) {  // jeśli w ostatniej kolumnie
             moveCar(currentPosition.x, currentPosition.y, MoveDirection.MOVE_DOWN);
-        } else if (parkingSpaces[currentPosition.x][currentPosition.y + 1] == null ) {   // jeśli prosta droga do ostatniej kolumny
+        } else if (parkingSpaces[currentPosition.x][currentPosition.y + 1] == null && job.visited[currentPosition.x][currentPosition.y+1] != true ) {   // jeśli prosta droga do ostatniej kolumny
             moveCar(currentPosition.x, currentPosition.y, MoveDirection.MOVE_RIGHT);
-        } else if ( currentPosition.x != getGridHeight()-1 && parkingSpaces[currentPosition.x+1][currentPosition.y] == null ) { //jeśli pod spodem miejsce wolne
+            job.visited[currentPosition.x][currentPosition.y+1] = true;
+        } else if ( currentPosition.x != getGridHeight()-1 && parkingSpaces[currentPosition.x+1][currentPosition.y] == null && job.visited[currentPosition.x+1][currentPosition.y] != true) { //jeśli pod spodem miejsce wolne
             moveCar(currentPosition.x,currentPosition.y,MoveDirection.MOVE_DOWN);
-        } else if ( currentPosition.x != 0 && parkingSpaces[currentPosition.x-1][currentPosition.y] == null) {  //jeśli nad samochodem jest miejsce wolne
+            job.visited[currentPosition.x+1][currentPosition.y] = true;
+        } else if ( currentPosition.x != 0 && parkingSpaces[currentPosition.x-1][currentPosition.y] == null && job.visited[currentPosition.x-1][currentPosition.y] != true) {  //jeśli nad samochodem jest miejsce wolne
             moveCar(currentPosition.x,currentPosition.y,MoveDirection.MOVE_UP);
+            job.visited[currentPosition.x+1][currentPosition.y] = true;
         } else if (currentPosition.x != getGridHeight()-1){
             int i;
             for (i = 0; i<getGridWidth();i++){
