@@ -142,6 +142,33 @@ public class ParkingGrid {
         return null;
     }
 
+    protected boolean insertJob(FindWayJob job) {
+        if ( findCarCoordsById(job.carID) == null){  // jeśli nie ma takiego samochodu - wprowadź go
+            parkingSpaces[getGridHeight()][getGridWidth()-1] = new Car(job.carID);
+            return false;
+        }
+        Coords currentCoords = findCarCoordsById(job.carID);
+
+        if ( currentCoords.x == getGridHeight()){  // jeśli jest na miejscu startowym
+            moveCar(currentCoords.x,currentCoords.y,MoveDirection.MOVE_UP);
+            return false;
+        } else if ( parkingSpaces[currentCoords.x][currentCoords.y-1] == null){ // jeśli miejsce po lewo jest wolne
+            moveCar(currentCoords.x,currentCoords.y,MoveDirection.MOVE_LEFT);
+            return true;
+        } else if ( parkingSpaces[currentCoords.x][0] == null){ // jeśli pierwsze miejsce w rzędzie jest wolne
+            int i;
+            for( i=0; i< getGridWidth();i++ ){
+                moveCar(currentCoords.x,i,MoveDirection.MOVE_LEFT);
+            }
+            return true;
+        } else {
+            moveCar(currentCoords.x,currentCoords.y,MoveDirection.MOVE_UP);
+            return false;
+        }
+
+
+    }
+
     // Jobs
     protected boolean findWayJob(FindWayJob job){
         Coords currentPosition = findCarCoordsById(job.carID);

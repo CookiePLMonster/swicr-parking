@@ -16,14 +16,19 @@ public class ParkingSimulation implements Runnable {
 
     private ParkingGrid grid = new ParkingGrid();
     private Queue<FindWayJob> findWayJobs = new ConcurrentLinkedQueue<FindWayJob>();
+    private Queue<FindWayJob> insertJobs = new ConcurrentLinkedQueue<FindWayJob>();
 
     @Override
     public void run() {
         while (true) {
             FindWayJob currentFindWay = findWayJobs.peek();
+            FindWayJob insertWay = insertJobs.peek();
             if (currentFindWay != null) {
                 if (grid.findWayJob(currentFindWay))
                     findWayJobs.remove();
+            } else if ( insertWay != null  ) {
+                if (grid.insertJob(insertWay))
+                    insertJobs.remove();
             }
 
 
@@ -51,5 +56,9 @@ public class ParkingSimulation implements Runnable {
 
     public void findWay(int carID) {
         findWayJobs.add( new FindWayJob(getGrid(), carID) );
+    }
+
+    public void insert(int carID)  {
+        insertJobs.add( new FindWayJob(getGrid(), carID));
     }
 }
