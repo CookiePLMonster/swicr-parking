@@ -2,6 +2,7 @@ package swicr;
 
 import swicr.logic.*;
 import swicr.view.CarSpriteCanvas;
+import swicr.view.ClockLabel;
 
 import javax.swing.*;
 
@@ -42,7 +43,7 @@ public class MainWindow {
         });
 
         simulator.getGrid().setupCanvas((CarSpriteCanvas)canvas);
-        simulator.setupTime(clockField);
+        simulator.setupTime((ClockLabel)clockField);
         simulator.start();
     }
 
@@ -59,5 +60,6 @@ public class MainWindow {
     private void createUIComponents() {
         // TODO: place custom component creation code here
         canvas = new CarSpriteCanvas();
+        clockField = new ClockLabel();
     }
 }

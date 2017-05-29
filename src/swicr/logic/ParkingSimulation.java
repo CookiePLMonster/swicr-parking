@@ -3,6 +3,7 @@ package swicr.logic;
 import swicr.logic.model.FindWayJob;
 import swicr.logic.time.Time;
 import swicr.logic.time.TimeSchedule;
+import swicr.logic.time.TimeTickEvent;
 
 import javax.swing.*;
 import java.util.Queue;
@@ -51,6 +52,7 @@ public class ParkingSimulation implements Runnable {
 
     public void start() {
         time.registerTickEvent(schedule);
+        time.start();
 
         thread = new Thread(this, "Simulation");
         thread.start();
@@ -68,8 +70,8 @@ public class ParkingSimulation implements Runnable {
         findWayJobs.add( new FindWayJob(carID) );
     }
 
-    public void setupTime(JLabel clockField) {
-        time.setTimeText(clockField);
+    public void setupTime(TimeTickEvent clockField) {
+        time.registerTickEvent(clockField);
     }
 
     public void insert(int carID)  {

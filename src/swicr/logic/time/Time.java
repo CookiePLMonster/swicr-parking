@@ -17,7 +17,6 @@ public class Time implements Runnable {
 
     private int currentTime = 0;
 
-    private JLabel clock;
     private Thread timeThread;
 
     private List<TimeTickEvent> tickEvents = new LinkedList<TimeTickEvent>();
@@ -26,39 +25,27 @@ public class Time implements Runnable {
         currentTime = startTimeHour * 60 + startTimeMin;
 
         timeThread = new Thread(this, "Time");
-        timeThread.start();
-    }
-
-    public void setTimeText(JLabel clockField) {
-        this.clock = clockField;
     }
 
     public void registerTickEvent(TimeTickEvent event) {
         tickEvents.add(event);
     }
 
+    private void dispatchTickEvents(int time) {
+        for ( TimeTickEvent e : tickEvents ) {
+            e.onTimeTick(time);
+        }
+    }
+
+    public void start() {
+        timeThread.start();
+    }
 
     @Override
     public void run() {
+        dispatchTickEvents(currentTime);
+
         while ( true ) {
-
-            int curTime = currentTime;
-            SwingUtilities.invokeLater(() -> {
-                int hour = curTime / 60;
-                int minute = curTime % 60;
-
-                StringBuilder string = new StringBuilder();
-                if ( hour < 10 ) string.append('0');
-                string.append(hour);
-
-                string.append(':');
-
-                if ( minute < 10 ) string.append('0');
-                string.append(minute);
-
-                clock.setText(string.toString());
-            });
-
             try {
                 Thread.sleep(TIMEDELAY);
             } catch (InterruptedException ex) {
@@ -68,9 +55,7 @@ public class Time implements Runnable {
             if (currentTime >= MINUTES_PER_DAY) {
                 currentTime -= MINUTES_PER_DAY;
             }
-            for ( TimeTickEvent e : tickEvents ) {
-                e.onTimeTick(currentTime);
-            }
+            dispatchTickEvents(currentTime);
         }
     }
 }
