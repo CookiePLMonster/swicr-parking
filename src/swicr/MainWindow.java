@@ -38,6 +38,7 @@ public class MainWindow {
         });
 
         symulujButton.addActionListener(e -> {
+            simulator.getGrid().maintenanceJobs();
         });
 
         simulator.getGrid().setupCanvas((CarSpriteCanvas)canvas);
