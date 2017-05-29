@@ -1,7 +1,9 @@
 package swicr.logic;
 
 import swicr.logic.model.FindWayJob;
+import swicr.logic.time.Time;
 
+import javax.swing.*;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -16,6 +18,8 @@ public class ParkingSimulation implements Runnable {
 
     private ParkingGrid grid = new ParkingGrid();
     private Queue<FindWayJob> findWayJobs = new ConcurrentLinkedQueue<FindWayJob>();
+
+    private Time time = new Time(6, 0);
 
     @Override
     public void run() {
@@ -51,5 +55,9 @@ public class ParkingSimulation implements Runnable {
 
     public void findWay(int carID) {
         findWayJobs.add( new FindWayJob(carID) );
+    }
+
+    public void setupTime(JLabel clockField) {
+        time.setTimeText(clockField);
     }
 }

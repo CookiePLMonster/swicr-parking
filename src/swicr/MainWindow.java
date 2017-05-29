@@ -17,6 +17,7 @@ public class MainWindow {
     private JTextField requestedCar;
     private JButton retrieve;
     private JButton symulujButton;
+    private JLabel clockField;
     private Fifo removeTasks;
     private Fifo insertTasks;
 
@@ -49,6 +50,7 @@ public class MainWindow {
         });
 
         simulator.getGrid().setupCanvas((CarSpriteCanvas)canvas);
+        simulator.setupTime(clockField);
         simulator.start();
     }
 
