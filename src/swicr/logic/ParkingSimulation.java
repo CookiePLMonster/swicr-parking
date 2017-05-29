@@ -1,5 +1,7 @@
 package swicr.logic;
 
+import swicr.logic.model.FindWayJob;
+
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -9,15 +11,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author Adrian Zdanowicz
  */
 public class ParkingSimulation implements Runnable {
+
     private Thread thread;
 
     private ParkingGrid grid = new ParkingGrid();
-    private Queue<Integer> findWayJobs = new ConcurrentLinkedQueue<Integer>();
+    private Queue<FindWayJob> findWayJobs = new ConcurrentLinkedQueue<FindWayJob>();
 
     @Override
     public void run() {
         while (true) {
-            Integer currentFindWay = findWayJobs.peek();
+            FindWayJob currentFindWay = findWayJobs.peek();
             if (currentFindWay != null) {
                 if (grid.findWayJob(currentFindWay))
                     findWayJobs.remove();
@@ -47,6 +50,6 @@ public class ParkingSimulation implements Runnable {
     }
 
     public void findWay(int carID) {
-        findWayJobs.add(carID);
+        findWayJobs.add( new FindWayJob(getGrid(), carID) );
     }
 }

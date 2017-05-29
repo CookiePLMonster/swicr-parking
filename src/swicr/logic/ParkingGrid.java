@@ -1,5 +1,6 @@
 package swicr.logic;
 
+import swicr.logic.model.FindWayJob;
 import swicr.view.CarSpriteCanvas;
 
 import javax.swing.*;
@@ -142,8 +143,8 @@ public class ParkingGrid {
     }
 
     // Jobs
-    protected boolean findWayJob(int carID){
-        Coords currentPosition = findCarCoordsById(carID);
+    protected boolean findWayJob(FindWayJob job){
+        Coords currentPosition = findCarCoordsById(job.carID);
         if ( currentPosition.y == GRID_HEIGHT-1 && currentPosition.x == GRID_WIDTH) {
             parkingSpaces[currentPosition.x][currentPosition.y] = null;
             return true;
