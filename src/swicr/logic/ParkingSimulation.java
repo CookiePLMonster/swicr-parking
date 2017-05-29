@@ -50,6 +50,6 @@ public class ParkingSimulation implements Runnable {
     }
 
     public void findWay(int carID) {
-        findWayJobs.add( new FindWayJob(getGrid(), carID) );
+        findWayJobs.add( new FindWayJob(carID) );
     }
 }

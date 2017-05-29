@@ -11,8 +11,8 @@ public class FindWayJob {
     public int carID;
     public boolean[][] visited;
 
-    public FindWayJob(ParkingGrid grid, int carID) {
+    public FindWayJob(int carID) {
         this.carID = carID;
-        this.visited = new boolean[grid.getGridHeight() + 1][grid.getGridWidth()];
+        this.visited = new boolean[ParkingGrid.getGridHeight() + 1][ParkingGrid.getGridWidth()];
     }
 }
