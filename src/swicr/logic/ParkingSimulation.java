@@ -2,6 +2,7 @@ package swicr.logic;
 
 import swicr.logic.model.FindWayJob;
 import swicr.logic.time.Time;
+import swicr.logic.time.TimeSchedule;
 
 import javax.swing.*;
 import java.util.Queue;
@@ -21,6 +22,7 @@ public class ParkingSimulation implements Runnable {
     private Queue<FindWayJob> insertJobs = new ConcurrentLinkedQueue<FindWayJob>();
 
     private Time time = new Time(6, 0);
+    private TimeSchedule schedule = new TimeSchedule("time.csv");
 
     @Override
     public void run() {
@@ -36,6 +38,8 @@ public class ParkingSimulation implements Runnable {
             }
 
 
+
+
             grid.repaintCanvas();
             try {
                 Thread.sleep(250);                 //1000 milliseconds is one second.
@@ -46,6 +50,8 @@ public class ParkingSimulation implements Runnable {
     }
 
     public void start() {
+        time.registerTickEvent(schedule);
+
         thread = new Thread(this, "Simulation");
         thread.start();
     }

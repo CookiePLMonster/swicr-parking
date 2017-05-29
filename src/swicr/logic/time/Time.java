@@ -1,6 +1,8 @@
 package swicr.logic.time;
 
 import javax.swing.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created on 2017-05-29.
@@ -18,6 +20,8 @@ public class Time implements Runnable {
     private JLabel clock;
     private Thread timeThread;
 
+    private List<TimeTickEvent> tickEvents = new LinkedList<TimeTickEvent>();
+
     public Time(int startTimeHour, int startTimeMin) {
         currentTime = startTimeHour * 60 + startTimeMin;
 
@@ -27,6 +31,10 @@ public class Time implements Runnable {
 
     public void setTimeText(JLabel clockField) {
         this.clock = clockField;
+    }
+
+    public void registerTickEvent(TimeTickEvent event) {
+        tickEvents.add(event);
     }
 
 
@@ -59,6 +67,9 @@ public class Time implements Runnable {
             currentTime += TIMESTEP;
             if (currentTime >= MINUTES_PER_DAY) {
                 currentTime -= MINUTES_PER_DAY;
+            }
+            for ( TimeTickEvent e : tickEvents ) {
+                e.onTimeTick(currentTime);
             }
         }
     }
