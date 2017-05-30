@@ -38,24 +38,16 @@ public class ParkingGrid {
         return GRID_HEIGHT;
     }
 
-    public boolean addCar(Car car) {
+    public boolean addCar(Car car) { //przy wstawieniu zwraca true
         int i;
         int j;
-        for ( i=0; i<GRID_HEIGHT; i+=2) {
-            for ( j=0; j<GRID_WIDTH-1;j++) {
-                if (parkingSpaces[i][j] == null) {
-                    parkingSpaces[i][j] = car;
-                    return true;
+        for(i=getGridHeight()-1;i>=0;i--){
+            if(parkingSpaces[i][0] == null){
+                for(j=0;j<getGridWidth();j++){
+                    moveCar(i,j,MoveDirection.MOVE_LEFT);
                 }
-            }
-        }
-
-        for ( i=1; i<GRID_HEIGHT; i+=2) {
-            for ( j=0; j<GRID_WIDTH-1;j++) {
-                if (parkingSpaces[i][j] == null) {
-                    parkingSpaces[i][j] = car;
-                    return true;
-                }
+                parkingSpaces[i][getGridWidth()-2] = car;
+                return true;
             }
         }
         return false;
