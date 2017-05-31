@@ -1,6 +1,7 @@
 package swicr.logic;
 
 import swicr.logic.model.FindWayJob;
+import swicr.logic.model.Job;
 import swicr.logic.time.Time;
 import swicr.logic.time.TimeSchedule;
 import swicr.logic.time.TimeTickEvent;
@@ -18,7 +19,7 @@ public class ParkingSimulation implements Runnable {
     private Thread thread;
 
     private ParkingGrid grid = new ParkingGrid();
-    private Queue<FindWayJob> jobs = new ConcurrentLinkedQueue<FindWayJob>();
+    private Queue<Job> jobs = new ConcurrentLinkedQueue<>();
 
     private Time time = new Time(6, 0);
     private TimeSchedule schedule;
@@ -30,11 +31,13 @@ public class ParkingSimulation implements Runnable {
     @Override
     public void run() {
         while (true) {
-            FindWayJob currentJob = jobs.peek();
+            Job currentJob = jobs.peek();
             if (currentJob != null) {
                 if (currentJob.doJob()) {
                     jobs.remove(currentJob);
                 }
+            } else {
+                maintenanceJob();
             }
 
             grid.repaintCanvas();
@@ -82,5 +85,9 @@ public class ParkingSimulation implements Runnable {
                 return grid.insertJob(this);
             }
         });
+    }
+
+    public void maintenanceJob() {
+        jobs.add(() -> grid.maintenanceJobs());
     }
 }

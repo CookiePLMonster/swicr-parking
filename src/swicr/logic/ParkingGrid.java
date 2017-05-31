@@ -132,13 +132,14 @@ public class ParkingGrid {
         return null;
     }
 
-    public void maintenanceJobs(){
+    public boolean maintenanceJobs(){
         int i,j;
         for(i=0; i<getGridHeight();i++){
             for(j=getGridWidth()-3;j>=0;j--){
                 moveCar(i,j,MoveDirection.MOVE_RIGHT);
             }
         }
+        return true;
     }
 
     protected boolean insertJob(FindWayJob job) {
