@@ -7,7 +7,7 @@ import swicr.logic.ParkingGrid;
  *
  * @author Adrian Zdanowicz
  */ // Job classes
-public class FindWayJob {
+public abstract class FindWayJob {
     public int carID;
     public boolean[][] visited;
 
@@ -15,4 +15,7 @@ public class FindWayJob {
         this.carID = carID;
         this.visited = new boolean[ParkingGrid.getGridHeight() + 1][ParkingGrid.getGridWidth()];
     }
+
+    public abstract boolean doJob();
+
 }

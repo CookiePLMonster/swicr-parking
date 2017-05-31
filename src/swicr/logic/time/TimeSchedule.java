@@ -52,7 +52,13 @@ public class TimeSchedule implements TimeTickEvent {
 
     @Override
     public void setInitialState(int time) {
-        List<TimeEntry> carsPresent = entries.stream().filter((foo) -> foo.drivein < (time+Time.getResolution()) || foo.driveoff >= time ).collect(Collectors.toList());
+        List<TimeEntry> carsPresent = entries.stream().filter(e -> {
+            if ( e.driveoff < e.drivein ) {
+                return (time+Time.getResolution()) < e.driveoff || time >= e.drivein;
+            }
+            return time >= e.drivein && (time+Time.getResolution()) < e.driveoff;
+
+        }).collect(Collectors.toList());
 
         for ( TimeEntry e : carsPresent ) {
             parent.addCar(e.carID);

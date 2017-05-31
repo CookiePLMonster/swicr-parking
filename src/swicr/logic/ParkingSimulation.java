@@ -18,8 +18,7 @@ public class ParkingSimulation implements Runnable {
     private Thread thread;
 
     private ParkingGrid grid = new ParkingGrid();
-    private Queue<FindWayJob> findWayJobs = new ConcurrentLinkedQueue<FindWayJob>();
-    private Queue<FindWayJob> insertJobs = new ConcurrentLinkedQueue<FindWayJob>();
+    private Queue<FindWayJob> jobs = new ConcurrentLinkedQueue<FindWayJob>();
 
     private Time time = new Time(6, 0);
     private TimeSchedule schedule;
@@ -31,14 +30,11 @@ public class ParkingSimulation implements Runnable {
     @Override
     public void run() {
         while (true) {
-            FindWayJob currentFindWay = findWayJobs.peek();
-            FindWayJob insertWay = insertJobs.peek();
-            if (currentFindWay != null) {
-                if (grid.findWayJob(currentFindWay))
-                    findWayJobs.remove();
-            } else if ( insertWay != null  ) {
-                if (grid.insertJob(insertWay))
-                    insertJobs.remove();
+            FindWayJob currentJob = jobs.peek();
+            if (currentJob != null) {
+                if (currentJob.doJob()) {
+                    jobs.remove(currentJob);
+                }
             }
 
             grid.repaintCanvas();
@@ -67,14 +63,24 @@ public class ParkingSimulation implements Runnable {
     }
 
     public void callCarOut(int carID) {
-        findWayJobs.add( new FindWayJob(carID) );
+        jobs.add(new FindWayJob(carID) {
+            @Override
+            public boolean doJob() {
+                return grid.findWayJob(this);
+            }
+        });
     }
 
     public void setupTime(TimeTickEvent clockField) {
         time.registerTickEvent(clockField);
     }
 
-    public void insert(int carID)  {
-        insertJobs.add( new FindWayJob(carID));
+    public void insert(int carID) {
+        jobs.add(new FindWayJob(carID) {
+            @Override
+            public boolean doJob() {
+                return grid.insertJob(this);
+            }
+        });
     }
 }
