@@ -5,6 +5,8 @@ import swicr.view.CarSpriteCanvas;
 import swicr.view.ClockLabel;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created on 2017-05-26.
@@ -46,6 +48,17 @@ public class MainWindow {
         simulator.getGrid().setupCanvas((CarSpriteCanvas)canvas);
         simulator.setupTime((ClockLabel)clockField);
         simulator.start();
+        zatrzymajZegarButton.addActionListener(e -> {
+            String str;
+            if ( simulator.toggleTimeState() ) {
+                str = "Zatrzymaj zegar";
+            }
+            else {
+                str = "Uruchom zegar";
+            }
+
+            SwingUtilities.invokeLater(() -> zatrzymajZegarButton.setText(str));
+        });
     }
 
 

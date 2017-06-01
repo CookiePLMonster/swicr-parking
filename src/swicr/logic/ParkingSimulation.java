@@ -37,7 +37,9 @@ public class ParkingSimulation implements Runnable {
                     jobs.remove(currentJob);
                 }
             } else {
-                maintenanceJob();
+                if ( !time.getIsStopped() ) {
+                    maintenanceJob();
+                }
             }
 
             grid.repaintCanvas();
@@ -76,6 +78,9 @@ public class ParkingSimulation implements Runnable {
 
     public void setupTime(TimeTickEvent clockField) {
         time.registerTickEvent(clockField);
+    }
+    public boolean toggleTimeState() {
+        return time.toggleTimeState();
     }
 
     public void insert(int carID) {
