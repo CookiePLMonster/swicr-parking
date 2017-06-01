@@ -19,6 +19,7 @@ public class MainWindow {
     private JButton retrieve;
     private JButton symulujButton;
     private JLabel clockField;
+    private JButton zatrzymajZegarButton;
 
     private ParkingSimulation simulator;
 
