@@ -15,6 +15,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author Adrian Zdanowicz
  */
 public class ParkingSimulation implements Runnable {
+    public static final int SIMULATION_RATE = 30;
+    public static final int SIMULATION_TICK_TIME = 250;
 
     private Thread thread;
 
@@ -31,6 +33,8 @@ public class ParkingSimulation implements Runnable {
     @Override
     public void run() {
         while (true) {
+            double timestep = 1000.0 / SIMULATION_RATE;
+            grid.setupMoveVector(timestep);
             Job currentJob = jobs.peek();
             if (currentJob != null) {
                 if (currentJob.doJob()) {
@@ -42,11 +46,15 @@ public class ParkingSimulation implements Runnable {
                 }
             }
 
-            grid.repaintCanvas();
-            try {
-                Thread.sleep(250);                 //1000 milliseconds is one second.
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
+            int delay = SIMULATION_TICK_TIME;
+            while ( delay > 0 ) {
+                try {
+                    Thread.sleep((int)timestep);
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+                grid.repaintCanvas();
+                delay -= (int)timestep;
             }
         }
     }

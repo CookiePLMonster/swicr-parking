@@ -30,6 +30,10 @@ public class ParkingGrid {
 
     private Car[][] parkingSpaces = new Car[GRID_HEIGHT+1][GRID_WIDTH];
 
+    private MoveDirection[][] moveVectors;
+    private double moveDelta;
+    private double timeStep;
+
     public static int getGridWidth() {
         return GRID_WIDTH;
     }
@@ -44,7 +48,7 @@ public class ParkingGrid {
         for(i=getGridHeight()-1;i>=0;i--){
             if(parkingSpaces[i][0] == null){
                 for(j=0;j<getGridWidth();j++){
-                    moveCar(i,j,MoveDirection.MOVE_LEFT);
+                    moveCar(i,j,MoveDirection.MOVE_LEFT, false);
                 }
                 parkingSpaces[i][getGridWidth()-2] = car;
                 return true;
@@ -54,37 +58,55 @@ public class ParkingGrid {
     }
 
     private void moveCar(int fromX, int fromY, MoveDirection direction) {
+        moveCar(fromX, fromY, direction, true);
+    }
+
+    private void moveCar(int fromX, int fromY, MoveDirection direction, boolean animatedMove) {
         if( parkingSpaces [fromX][fromY] != null){
             switch (direction){
                 case MOVE_DOWN:
                     if(parkingSpaces [fromX+1][fromY] == null){
                         parkingSpaces [fromX+1][fromY] = parkingSpaces[fromX][fromY];
                         parkingSpaces[fromX][fromY] = null;
+                        if ( animatedMove ) moveVectors[fromX+1][fromY] = direction;
                         break;
                     }
                 case MOVE_UP:
                     if(parkingSpaces [fromX-1][fromY] == null){
                         parkingSpaces [fromX-1][fromY] = parkingSpaces[fromX][fromY];
                         parkingSpaces[fromX][fromY] = null;
+                        if ( animatedMove ) moveVectors[fromX-1][fromY] = direction;
                         break;
                     }
                 case MOVE_LEFT:
                     if(parkingSpaces [fromX][fromY-1] == null){
                         parkingSpaces [fromX][fromY-1] = parkingSpaces[fromX][fromY];
                         parkingSpaces[fromX][fromY] = null;
+                        if ( animatedMove ) moveVectors[fromX][fromY-1] = direction;
                         break;
                     }
                 case MOVE_RIGHT:
                     if(parkingSpaces [fromX][fromY+1] == null){
                         parkingSpaces [fromX][fromY+1] = parkingSpaces[fromX][fromY];
                         parkingSpaces[fromX][fromY] = null;
+                        if ( animatedMove ) moveVectors[fromX][fromY+1] = direction;
                         break;
                     }
             }
         }
     }
 
+    public synchronized void setupMoveVector(double timeStep) {
+        moveVectors = new MoveDirection[GRID_HEIGHT+1][GRID_WIDTH];
+        this.timeStep = timeStep;
+        this.moveDelta = CarSpriteCanvas.CIRCLE_DIST;
+    }
+
     public void paint(Graphics g, int marginX, int marginY, int circleSize) {
+        final double delta;
+        synchronized (this) {
+            delta = moveDelta;
+        }
         int y = 0;
         int posY = 0;
         for ( Car[] row : parkingSpaces ) {
@@ -94,11 +116,31 @@ public class ParkingGrid {
                 if ( y != GRID_HEIGHT || x == GRID_WIDTH-1 ) {
 
                     if (space != null) {
+                        int positionX = marginX + posX;
+                        int positionY = marginY + posY;
+
+                        if ( moveVectors[y][x] != null ) {
+                            switch (moveVectors[y][x]) {
+                                case MOVE_DOWN:
+                                    positionY -= delta;
+                                    break;
+                                case MOVE_UP:
+                                    positionY += delta;
+                                    break;
+                                case MOVE_LEFT:
+                                    positionX += delta;
+                                    break;
+                                case MOVE_RIGHT:
+                                    positionX -= delta;
+                                    break;
+                            }
+                        }
+
                         g.setColor(Color.BLUE);
-                        g.fillOval(marginX + posX, marginY + posY, circleSize, circleSize);
+                        g.fillOval(positionX, positionY, circleSize, circleSize);
 
                         g.setColor(Color.WHITE);
-                        g.drawString(space.getName(), marginX + posX + (circleSize / 2), marginY + posY + (circleSize / 2));
+                        g.drawString(space.getName(), positionX + (circleSize / 2), positionY + (circleSize / 2));
                     }
 
                     // Empty space
@@ -108,10 +150,13 @@ public class ParkingGrid {
                 }
 
                 x++;
-                posX += (circleSize * 3) / 2;
+                posX += CarSpriteCanvas.CIRCLE_DIST;
             }
             y++;
-            posY += (circleSize * 3) / 2;
+            posY += CarSpriteCanvas.CIRCLE_DIST;
+        }
+        synchronized (this) {
+            moveDelta -= (timeStep / ParkingSimulation.SIMULATION_TICK_TIME) * CarSpriteCanvas.CIRCLE_DIST;
         }
     }
 
