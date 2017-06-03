@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author Adrian Zdanowicz
  */
 public class ParkingSimulation implements Runnable {
-    public static final int SIMULATION_RATE = 30;
+    public static final int SIMULATION_RATE = 60;
     public static final int SIMULATION_TICK_TIME = 250;
 
     private Thread thread;
