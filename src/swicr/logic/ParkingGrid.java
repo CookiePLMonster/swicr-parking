@@ -28,11 +28,17 @@ public class ParkingGrid {
         MOVE_RIGHT
     }
 
+    private ParkingSimulation parentSimulation;
+
     private Car[][] parkingSpaces = new Car[GRID_HEIGHT+1][GRID_WIDTH];
 
     private MoveDirection[][] moveVectors;
     private double moveDelta;
     private double timeStep;
+
+    public ParkingGrid(ParkingSimulation parentSimulation) {
+        this.parentSimulation = parentSimulation;
+    }
 
     public static int getGridWidth() {
         return GRID_WIDTH;
@@ -156,7 +162,7 @@ public class ParkingGrid {
             posY += CarSpriteCanvas.CIRCLE_DIST;
         }
         synchronized (this) {
-            moveDelta -= (timeStep / ParkingSimulation.SIMULATION_TICK_TIME) * CarSpriteCanvas.CIRCLE_DIST;
+            moveDelta -= (timeStep / parentSimulation.scaledTickTime()) * CarSpriteCanvas.CIRCLE_DIST;
         }
     }
 

@@ -20,7 +20,7 @@ public class ParkingSimulation implements Runnable {
 
     private Thread thread;
 
-    private ParkingGrid grid = new ParkingGrid();
+    private ParkingGrid grid = new ParkingGrid(this);
     private Queue<Job> jobs = new ConcurrentLinkedQueue<>();
 
     private Time time = new Time(6, 0);
@@ -28,6 +28,11 @@ public class ParkingSimulation implements Runnable {
 
     public ParkingSimulation() {
         schedule = new TimeSchedule(this, "time.csv");
+    }
+
+    public int scaledTickTime() {
+        double scaledTick = (double)SIMULATION_TICK_TIME * (100.0/time.getTimeScale());
+        return (int)scaledTick;
     }
 
     @Override
@@ -46,7 +51,7 @@ public class ParkingSimulation implements Runnable {
                 }
             }
 
-            int delay = SIMULATION_TICK_TIME;
+            int delay = scaledTickTime();
             while ( delay > 0 ) {
                 try {
                     Thread.sleep((int)timestep);
@@ -89,6 +94,9 @@ public class ParkingSimulation implements Runnable {
     }
     public boolean toggleTimeState() {
         return time.toggleTimeState();
+    }
+    public void setTimeScale(int value) {
+        time.setTimeScale(value);
     }
 
     public void insert(int carID) {

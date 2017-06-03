@@ -21,6 +21,7 @@ public class Time implements Runnable {
     private Object timeBarrier = new Object();
 
     private List<TimeTickEvent> tickEvents = new LinkedList<TimeTickEvent>();
+    private int timeScale = 100;
 
     public Time(int startTimeHour, int startTimeMin) {
         currentTime = startTimeHour * 60 + startTimeMin;
@@ -50,7 +51,8 @@ public class Time implements Runnable {
 
         while ( true ) {
             try {
-                Thread.sleep(TIMEDELAY);
+                double scaledTime = (double)TIMEDELAY * (100.0/timeScale);
+                Thread.sleep((int)scaledTime);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
@@ -81,6 +83,14 @@ public class Time implements Runnable {
         }
 
         return oldState;
+    }
+
+    public void setTimeScale(int scale) {
+        this.timeScale = scale;
+    }
+
+    public int getTimeScale() {
+        return timeScale;
     }
 
     public boolean getIsStopped() {

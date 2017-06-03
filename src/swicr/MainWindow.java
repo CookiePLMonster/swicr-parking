@@ -5,8 +5,12 @@ import swicr.view.CarSpriteCanvas;
 import swicr.view.ClockLabel;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.InputMethodListener;
 
 /**
  * Created on 2017-05-26.
@@ -22,6 +26,7 @@ public class MainWindow {
     private JButton symulujButton;
     private JLabel clockField;
     private JButton zatrzymajZegarButton;
+    private JSlider timescale;
 
     private ParkingSimulation simulator;
 
@@ -37,7 +42,10 @@ public class MainWindow {
             int carID;
             try {
                 carID = Integer.parseUnsignedInt(requestedCar.getText());
-            } catch ( NumberFormatException ex ) { carID = 0; };
+            } catch (NumberFormatException ex) {
+                carID = 0;
+            }
+            ;
             simulator.callCarOut(carID);
         });
 
@@ -45,19 +53,24 @@ public class MainWindow {
             simulator.maintenanceJob();
         });
 
-        simulator.getGrid().setupCanvas((CarSpriteCanvas)canvas);
-        simulator.setupTime((ClockLabel)clockField);
+        simulator.getGrid().setupCanvas((CarSpriteCanvas) canvas);
+        simulator.setupTime((ClockLabel) clockField);
         simulator.start();
         zatrzymajZegarButton.addActionListener(e -> {
             String str;
-            if ( simulator.toggleTimeState() ) {
+            if (simulator.toggleTimeState()) {
                 str = "Zatrzymaj zegar";
-            }
-            else {
+            } else {
                 str = "Uruchom zegar";
             }
 
             SwingUtilities.invokeLater(() -> zatrzymajZegarButton.setText(str));
+        });
+        timescale.addChangeListener(e -> {
+            JSlider source = (JSlider) e.getSource();
+            if (!source.getValueIsAdjusting()) {
+                simulator.setTimeScale(source.getValue());
+            }
         });
     }
 
