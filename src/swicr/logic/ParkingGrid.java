@@ -223,6 +223,7 @@ public class ParkingGrid {
     // Jobs
     protected boolean findWayJob(FindWayJob job){
         Coords currentPosition = findCarCoordsById(job.carID);
+        if ( currentPosition == null ) return true;
 
         if ( currentPosition.y == GRID_HEIGHT-1 && currentPosition.x == GRID_WIDTH) {
             parentSimulation.getCarsRepository().carGotMovedOut(job.carID);

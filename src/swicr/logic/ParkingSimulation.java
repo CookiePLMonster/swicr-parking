@@ -101,6 +101,15 @@ public class ParkingSimulation implements Runnable {
         });
     }
 
+    public void callRandomOut() {
+        List<Integer> asList = new ArrayList(cars.getEntries().keySet());
+        asList.removeAll(cars.getCarsNotParked());
+        if ( !asList.isEmpty() ) {
+            Collections.shuffle(asList);
+            callCarOut(asList.get(0));
+        }
+    }
+
     public void setupTime(TimeTickEvent clockField) {
         time.registerTickEvent(clockField);
     }
@@ -123,8 +132,10 @@ public class ParkingSimulation implements Runnable {
 
     public void insertRandom() {
         List<Integer> asList = new ArrayList(cars.getCarsNotParked());
-        Collections.shuffle(asList);
-        insert(asList.get(0));
+        if ( !asList.isEmpty() ) {
+            Collections.shuffle(asList);
+            insert(asList.get(0));
+        }
     }
 
     public void maintenanceJob() {
