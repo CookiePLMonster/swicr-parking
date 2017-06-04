@@ -142,7 +142,7 @@ public class ParkingGrid {
                             }
                         }
 
-                        g.setColor(Color.BLUE);
+                        g.setColor(space.getColor());
                         g.fillOval(positionX, positionY, circleSize, circleSize);
 
                         g.setColor(Color.WHITE);
@@ -195,7 +195,7 @@ public class ParkingGrid {
 
     protected boolean insertJob(FindWayJob job) {
         if ( findCarCoordsById(job.carID) == null){  // jeśli nie ma takiego samochodu - wprowadź go
-            parkingSpaces[getGridHeight()][getGridWidth()-1] = new Car(job.carID);
+            parkingSpaces[getGridHeight()][getGridWidth()-1] = parentSimulation.getCarsRepository().fetchCar(job.carID);
             return false;
         }
         Coords currentCoords = findCarCoordsById(job.carID);
@@ -225,6 +225,7 @@ public class ParkingGrid {
         Coords currentPosition = findCarCoordsById(job.carID);
 
         if ( currentPosition.y == GRID_HEIGHT-1 && currentPosition.x == GRID_WIDTH) {
+            parentSimulation.getCarsRepository().carGotMovedOut(job.carID);
             parkingSpaces[currentPosition.x][currentPosition.y] = null;
             return true;
         }

@@ -1,5 +1,6 @@
 package swicr.logic;
 
+import swicr.logic.model.CarRepository;
 import swicr.logic.model.FindWayJob;
 import swicr.logic.model.Job;
 import swicr.logic.time.Time;
@@ -20,6 +21,8 @@ public class ParkingSimulation implements Runnable {
 
     private Thread thread;
 
+    private CarRepository cars;
+
     private ParkingGrid grid = new ParkingGrid(this);
     private Queue<Job> jobs = new ConcurrentLinkedQueue<>();
 
@@ -27,7 +30,8 @@ public class ParkingSimulation implements Runnable {
     private TimeSchedule schedule;
 
     public ParkingSimulation() {
-        schedule = new TimeSchedule(this, "time.csv");
+        cars = new CarRepository("time.csv");
+        schedule = new TimeSchedule(this, cars);
     }
 
     public int scaledTickTime() {
@@ -76,8 +80,12 @@ public class ParkingSimulation implements Runnable {
         return grid;
     }
 
+    public CarRepository getCarsRepository() {
+        return cars;
+    }
+
     public boolean addCar(int carID) {
-        return grid.addCar(new Car(carID));
+        return grid.addCar(cars.fetchCar(carID));
     }
 
     public void callCarOut(int carID) {

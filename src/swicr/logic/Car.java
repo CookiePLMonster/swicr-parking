@@ -1,5 +1,7 @@
 package swicr.logic;
 
+import java.awt.*;
+
 /**
  * Created on 2017-05-26.
  *
@@ -8,14 +10,16 @@ package swicr.logic;
 public class Car {
     private int id;
     private String name;
+    private Color color;
 
-    public Car(int id) {
+    public Car(int id, Color color) {
         this.id = id;
         this.name = Integer.toString(id);
+        this.color = color;
     }
 
-    public void tick() {
-
+    public Color getColor() {
+        return color;
     }
 
     public int getId() {

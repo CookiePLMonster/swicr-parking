@@ -1,12 +1,14 @@
 package swicr.logic.time;
 
 import swicr.logic.ParkingSimulation;
+import swicr.logic.model.CarRepository;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -32,21 +34,11 @@ public class TimeSchedule implements TimeTickEvent {
 
     private List<TimeEntry> entries = new ArrayList<TimeEntry>();
 
-    public TimeSchedule(ParkingSimulation parent, String fileName) {
+    public TimeSchedule(ParkingSimulation parent, CarRepository cars) {
         this.parent = parent;
 
-        String line;
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            while ((line = br.readLine()) != null) {
-                String[] tokens = line.split(",");
-                int carID = Integer.parseInt(tokens[0]);
-                int driveoff = Integer.parseInt(tokens[4]);
-                int drivein = Integer.parseInt(tokens[5]);
-
-                entries.add(new TimeEntry(carID, driveoff, drivein));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (Map.Entry<Integer, CarRepository.CarEntry> car : cars.getEntries().entrySet() ) {
+            entries.add(new TimeEntry(car.getKey(), car.getValue().getDriveoff(), car.getValue().getDrivein()));
         }
     }
 
