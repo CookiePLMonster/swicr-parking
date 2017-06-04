@@ -37,14 +37,10 @@ public class MainWindow {
             simulator.insertRandom();
         });
         retrieve.addActionListener(e -> {
-            int carID;
             try {
-                carID = Integer.parseUnsignedInt(requestedCar.getText());
-            } catch (NumberFormatException ex) {
-                carID = 0;
-            }
-            ;
-            simulator.callCarOut(carID);
+                int carID = Integer.parseUnsignedInt(requestedCar.getText());
+                simulator.callCarOut(carID);
+            } catch (NumberFormatException ex) {}
         });
 
         symulujButton.addActionListener(e -> {

@@ -74,6 +74,10 @@ public class CarRepository {
         return null;
     }
 
+    public boolean isParked(int carID) {
+        return entries.containsKey(carID) && !carsNotParked.contains(carID);
+    }
+
     public void carGotMovedOut(int carID) {
         carsNotParked.add(carID);
     }
