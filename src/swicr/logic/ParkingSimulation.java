@@ -112,6 +112,7 @@ public class ParkingSimulation implements Runnable {
     }
 
     public void insert(int carID) {
+        if ( cars.isParked(carID) ) return;
         jobs.add(new FindWayJob(carID) {
             @Override
             public boolean doJob() {
