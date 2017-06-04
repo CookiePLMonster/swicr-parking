@@ -30,13 +30,11 @@ public class MainWindow {
 
     private ParkingSimulation simulator;
 
-    private int carNum = 0;
-
     public MainWindow() {
         simulator = new ParkingSimulation();
 
         addButton.addActionListener(e -> {
-            simulator.insert(carNum++);
+            simulator.insertRandom();
         });
         retrieve.addActionListener(e -> {
             int carID;

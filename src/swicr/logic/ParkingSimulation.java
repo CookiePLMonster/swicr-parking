@@ -7,6 +7,9 @@ import swicr.logic.time.Time;
 import swicr.logic.time.TimeSchedule;
 import swicr.logic.time.TimeTickEvent;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -114,6 +117,12 @@ public class ParkingSimulation implements Runnable {
                 return grid.insertJob(this);
             }
         });
+    }
+
+    public void insertRandom() {
+        List<Integer> asList = new ArrayList(cars.getCarsNotParked());
+        Collections.shuffle(asList);
+        insert(asList.get(0));
     }
 
     public void maintenanceJob() {
