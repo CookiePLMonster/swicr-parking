@@ -1,14 +1,15 @@
 package swicr.logic.model;
 
 import swicr.logic.Car;
-import swicr.logic.time.TimeSchedule;
 
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 /**

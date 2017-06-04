@@ -3,9 +3,6 @@ package swicr.logic.time;
 import swicr.logic.ParkingSimulation;
 import swicr.logic.model.CarRepository;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
