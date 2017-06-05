@@ -236,16 +236,13 @@ public class ParkingGrid {
         } else if (parkingSpaces[currentPosition.x][currentPosition.y + 1] == null && job.visited[currentPosition.x][currentPosition.y+1] != true ) {   // jeśli prosta droga do ostatniej kolumny
             moveCar(currentPosition.x, currentPosition.y, MoveDirection.MOVE_RIGHT);
             job.visited[currentPosition.x][currentPosition.y+1] = true;
-        } else if ( currentPosition.x != getGridHeight()-1 && parkingSpaces[currentPosition.x+1][currentPosition.y] == null && job.visited[currentPosition.x+1][currentPosition.y] != true) { //jeśli pod spodem miejsce wolne
-            moveCar(currentPosition.x,currentPosition.y,MoveDirection.MOVE_DOWN);
-            job.visited[currentPosition.x+1][currentPosition.y] = true;
         } else if ( currentPosition.x != 0 && parkingSpaces[currentPosition.x-1][currentPosition.y] == null && job.visited[currentPosition.x-1][currentPosition.y] != true) {  //jeśli nad samochodem jest miejsce wolne
             moveCar(currentPosition.x,currentPosition.y,MoveDirection.MOVE_UP);
             job.visited[currentPosition.x+1][currentPosition.y] = true;
         } else if (currentPosition.x != getGridHeight()-1){
             int i;
             for (i = 0; i<getGridWidth();i++){
-                moveCar(currentPosition.x, 9-i,MoveDirection.MOVE_RIGHT);
+                moveCar(currentPosition.x, getGridWidth()-1-i,MoveDirection.MOVE_RIGHT);
             } moveCar(currentPosition.x+1,0,MoveDirection.MOVE_UP);
             for(i = 0; i<getGridWidth();i++){
                 moveCar(currentPosition.x+1,i,MoveDirection.MOVE_LEFT);
