@@ -109,6 +109,12 @@ public class ParkingGrid {
     }
 
     public void paint(Graphics g, int marginX, int marginY, int circleSize) {
+        paintEmptySpaces(g, marginX, marginY, circleSize);
+
+        marginX += 2;
+        marginY += 2;
+        circleSize -= 4;
+
         final double delta;
         synchronized (this) {
             delta = moveDelta;
@@ -149,10 +155,6 @@ public class ParkingGrid {
                         g.drawString(space.getName(), positionX + (circleSize / 2), positionY + (circleSize / 2));
                     }
 
-                    // Empty space
-                    g.setColor(Color.BLACK);
-                    g.drawOval(marginX + posX, marginY + posY, circleSize, circleSize);
-
                 }
 
                 x++;
@@ -163,6 +165,29 @@ public class ParkingGrid {
         }
         synchronized (this) {
             moveDelta -= (timeStep / parentSimulation.scaledTickTime()) * CarSpriteCanvas.CIRCLE_DIST;
+        }
+    }
+
+    private void paintEmptySpaces(Graphics g, int marginX, int marginY, int circleSize) {
+        g.setColor(Color.BLACK);
+
+        int y = 0;
+        int posY = 0;
+        for ( Car[] row : parkingSpaces ) {
+            int x = 0;
+            int posX = 0;
+            for ( Car ignored : row ) {
+                if ( y != GRID_HEIGHT || x == GRID_WIDTH-1 ) {
+                    // Empty space
+                    g.drawOval(marginX + posX, marginY + posY, circleSize, circleSize);
+
+                }
+
+                x++;
+                posX += CarSpriteCanvas.CIRCLE_DIST;
+            }
+            y++;
+            posY += CarSpriteCanvas.CIRCLE_DIST;
         }
     }
 
