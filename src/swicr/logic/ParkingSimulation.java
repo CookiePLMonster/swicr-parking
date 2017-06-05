@@ -102,7 +102,7 @@ public class ParkingSimulation implements Runnable {
     }
 
     public void callRandomOut() {
-        List<Integer> asList = new ArrayList(cars.getEntries().keySet());
+        List<Integer> asList = new ArrayList<>(cars.getEntries().keySet());
         asList.removeAll(cars.getCarsNotParked());
         if ( !asList.isEmpty() ) {
             Collections.shuffle(asList);
@@ -131,7 +131,7 @@ public class ParkingSimulation implements Runnable {
     }
 
     public void insertRandom() {
-        List<Integer> asList = new ArrayList(cars.getCarsNotParked());
+        List<Integer> asList = new ArrayList<>(cars.getCarsNotParked());
         if ( !asList.isEmpty() ) {
             Collections.shuffle(asList);
             insert(asList.get(0));
