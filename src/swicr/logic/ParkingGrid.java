@@ -75,29 +75,29 @@ public class ParkingGrid {
                         parkingSpaces [fromX+1][fromY] = parkingSpaces[fromX][fromY];
                         parkingSpaces[fromX][fromY] = null;
                         if ( animatedMove ) moveVectors[fromX+1][fromY] = direction;
-                        break;
                     }
+                    break;
                 case MOVE_UP:
                     if(parkingSpaces [fromX-1][fromY] == null){
                         parkingSpaces [fromX-1][fromY] = parkingSpaces[fromX][fromY];
                         parkingSpaces[fromX][fromY] = null;
                         if ( animatedMove ) moveVectors[fromX-1][fromY] = direction;
-                        break;
                     }
+                    break;
                 case MOVE_LEFT:
                     if(parkingSpaces [fromX][fromY-1] == null){
                         parkingSpaces [fromX][fromY-1] = parkingSpaces[fromX][fromY];
                         parkingSpaces[fromX][fromY] = null;
                         if ( animatedMove ) moveVectors[fromX][fromY-1] = direction;
-                        break;
                     }
+                    break;
                 case MOVE_RIGHT:
                     if(parkingSpaces [fromX][fromY+1] == null){
                         parkingSpaces [fromX][fromY+1] = parkingSpaces[fromX][fromY];
                         parkingSpaces[fromX][fromY] = null;
                         if ( animatedMove ) moveVectors[fromX][fromY+1] = direction;
-                        break;
                     }
+                    break;
             }
         }
     }
