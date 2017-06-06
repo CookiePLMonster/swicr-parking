@@ -258,10 +258,10 @@ public class ParkingGrid {
 
         if (currentPosition.y == getGridWidth() - 1 ) {  // jeśli w ostatniej kolumnie
             moveCar(currentPosition.x, currentPosition.y, MoveDirection.MOVE_DOWN);
-        } else if (parkingSpaces[currentPosition.x][currentPosition.y + 1] == null && job.visited[currentPosition.x][currentPosition.y+1] != true ) {   // jeśli prosta droga do ostatniej kolumny
+        } else if (parkingSpaces[currentPosition.x][currentPosition.y + 1] == null && !job.visited[currentPosition.x][currentPosition.y + 1]) {   // jeśli prosta droga do ostatniej kolumny
             moveCar(currentPosition.x, currentPosition.y, MoveDirection.MOVE_RIGHT);
             job.visited[currentPosition.x][currentPosition.y+1] = true;
-        } else if ( currentPosition.x != 0 && parkingSpaces[currentPosition.x-1][currentPosition.y] == null && job.visited[currentPosition.x-1][currentPosition.y] != true) {  //jeśli nad samochodem jest miejsce wolne
+        } else if ( currentPosition.x != 0 && parkingSpaces[currentPosition.x-1][currentPosition.y] == null && !job.visited[currentPosition.x - 1][currentPosition.y]) {  //jeśli nad samochodem jest miejsce wolne
             moveCar(currentPosition.x,currentPosition.y,MoveDirection.MOVE_UP);
             job.visited[currentPosition.x+1][currentPosition.y] = true;
         } else if (currentPosition.x != getGridHeight()-1){
@@ -271,17 +271,19 @@ public class ParkingGrid {
             } moveCar(currentPosition.x+1,0,MoveDirection.MOVE_UP);
             for(i = 0; i<getGridWidth();i++){
                 moveCar(currentPosition.x+1,i,MoveDirection.MOVE_LEFT);
-            } moveCar(currentPosition.x,getGridWidth()-1,MoveDirection.MOVE_DOWN);
-            moveCar(currentPosition.x+1,getGridWidth()-1,MoveDirection.MOVE_LEFT);
+            } moveCar(currentPosition.x,getGridWidth()-1,MoveDirection.MOVE_DOWN, false);
+            moveCar(currentPosition.x+1,getGridWidth()-1,MoveDirection.MOVE_LEFT, false);
+            moveVectors[currentPosition.x+1][getGridWidth()-2] = MoveDirection.MOVE_DOWN;
         } else {
             int i;
             for (i = 0; i<getGridWidth();i++){
                 moveCar(currentPosition.x, 9-i,MoveDirection.MOVE_RIGHT);
-            } moveCar(currentPosition.x,getGridWidth()-1,MoveDirection.MOVE_UP);
+            } moveCar(currentPosition.x,getGridWidth()-1,MoveDirection.MOVE_UP, false);
             moveCar(currentPosition.x-1,0,MoveDirection.MOVE_DOWN);
             for(i = 0; i<getGridWidth();i++) {
                 moveCar(currentPosition.x - 1, i, MoveDirection.MOVE_LEFT);
             }
+            moveVectors[currentPosition.x-1][getGridWidth()-2] = MoveDirection.MOVE_UP;
         }
         return false;
     }
