@@ -115,6 +115,8 @@ public class ParkingGrid {
         marginY += 2;
         circleSize -= 4;
 
+        FontMetrics fm = g.getFontMetrics();
+
         final double delta;
         synchronized (this) {
             delta = moveDelta;
@@ -152,7 +154,7 @@ public class ParkingGrid {
                         g.fillOval(positionX, positionY, circleSize, circleSize);
 
                         g.setColor(Color.WHITE);
-                        g.drawString(space.getName(), positionX + (circleSize / 2), positionY + (circleSize / 2));
+                        g.drawString(space.getName(), positionX + (circleSize - fm.stringWidth(space.getName())) / 2, positionY + fm.getAscent() + (circleSize - fm.getHeight()) / 2);
                     }
 
                 }
